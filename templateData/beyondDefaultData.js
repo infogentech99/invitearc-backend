@@ -14,7 +14,6 @@ const beyondDefaultData = {
   weddingVenue : "123 Anywhere St., Any City, ST 12345",
   blessingMessage : "With the godly blessings of",
   eventIntro : "On the following events",
-
   
 };
 
