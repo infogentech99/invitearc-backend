@@ -8,6 +8,7 @@ import authRouter from "./routes/authRoutes.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import hitchedDefaultData from "./templateData/hitchedDefaultData.js";
+import biyeDefaultData from "./templateData/biyeDefaultData.js";
 import auraDefaultData from "./templateData/auraDefaultData.js";
 import laavanDefaultData from "./templateData/laavanDefaultData.js";
 import starlightDefaultData from "./templateData/starlightDefaultData.js";
@@ -34,6 +35,16 @@ const seedTemplates = async () => {
         previewImage: "/assets/preview-images/hitched.webp",
         componentKey: "hitched",
         defaultData: hitchedDefaultData,
+      },
+      {
+        title: "Biye",
+        slug: "biye",
+        indprice: 2199,
+        usaprice: 31,
+        category: "Hindu Weddings",
+        previewImage: "/assets/preview-images/biye.webp",
+        componentKey: "biye",
+        defaultData: biyeDefaultData,
       },
       {
         title: "Aura",
