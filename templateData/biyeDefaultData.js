@@ -84,8 +84,6 @@ const biyeDefaultData = {
   sharePreviewImage:
     "https://res.cloudinary.com/drl4fmhrq/image/upload/v1783145066/og_n_yisygg.jpg",
 
-
-
 }
 
 
