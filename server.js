@@ -8,6 +8,8 @@ import authRouter from "./routes/authRoutes.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import hitchedDefaultData from "./templateData/hitchedDefaultData.js";
+import saanjhDefaultData from "./templateData/saanjhDefaultData.js";
+import milanDefaultData from "./templateData/milanDefaultData.js";
 import biyeDefaultData from "./templateData/biyeDefaultData.js";
 import auraDefaultData from "./templateData/auraDefaultData.js";
 import laavanDefaultData from "./templateData/laavanDefaultData.js";
@@ -36,6 +38,28 @@ const seedTemplates = async () => {
         componentKey: "hitched",
         defaultData: hitchedDefaultData,
       },
+      {
+        title: "Saanjh",
+        slug: "saanjh",
+        indprice: 1549,
+        usaprice: 16,
+        category: "Hindu Weddings",
+        previewImage: "/assets/preview-images/saanjh.webp",
+        componentKey: "saanjh",
+        defaultData: saanjhDefaultData,
+      },
+
+       {
+        title: "Milan",
+        slug: "milan",
+        indprice: 1249,
+        usaprice: 14,
+        category: "Hindu Weddings",
+        previewImage: "/assets/preview-images/milan.webp",
+        componentKey: "milan",
+        defaultData: milanDefaultData,
+      },
+
       {
         title: "Biye",
         slug: "biye",
@@ -76,7 +100,7 @@ const seedTemplates = async () => {
         componentKey: "laavan",
         defaultData: laavanDefaultData,
       },
-       {
+      {
         title: "Starlight",
         slug: "starlight",
         indprice: 3999,
@@ -96,7 +120,7 @@ const seedTemplates = async () => {
         componentKey: "mayra",
         defaultData: mayraDefaultData,
       },
-       {
+      {
         title: "Kalyanam",
         slug: "kalyanam",
         indprice: 5999,
@@ -106,7 +130,7 @@ const seedTemplates = async () => {
         componentKey: "kalyanam",
         defaultData: kalyanamDefaultData,
       },
-       {
+      {
         title: "Niqah",
         slug: "niqah",
         indprice: 3499,
@@ -116,7 +140,7 @@ const seedTemplates = async () => {
         componentKey: "niqah",
         defaultData: niqahDefaultData,
       },
-        {
+      {
         title: "Vows",
         slug: "vows",
         indprice: 3299,
@@ -127,7 +151,7 @@ const seedTemplates = async () => {
         defaultData: vowsDefaultData,
       },
 
-       {
+      {
         title: "Beyond",
         slug: "beyond",
         indprice: 3339,
