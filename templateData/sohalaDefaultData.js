@@ -42,8 +42,7 @@ coupleMessageClosingTitle: "Awaiting the Pleasure of Your Company",
   image1: "",
   image2: "",
   image3: "",
-  image4: "",
-  
+  image4: "", 
 },
 
   events: [
