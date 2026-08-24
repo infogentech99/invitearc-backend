@@ -40,7 +40,6 @@ brideGrandParentsName: "Sdn. Parkash Kapoor and Sd. Avtar Singh.",
   marriageCountdownDescription:
     "Surrounded by family and friends, we can't wait to celebrate this beautiful moment with you.",
   religiousSign:"",
-
  events: [
     {
       title_ceremony: "Mehendi",
