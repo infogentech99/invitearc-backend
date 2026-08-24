@@ -16,7 +16,7 @@ const auraDefaultData = {
   coupleMessageThingsToKnowDescription:
     "To help you feel at ease and enjoy every moment of the celebrations, we’ve gathered a few thoughtful details we’d love for you to know before the big day.",
   coupleMessageClosingTitle: "Awaiting the Pleasure of Your Company",
-  coupleMessageRsvpText: "Click on the Whatsapp icon to RSVP",
+  coupleMessageRsvpText: "Click the link to RSVP",
   coupleMessageLocationTitle: "Location",
   coupleMessageLocationDetails:
     "The Central Park Hotel\nBund Garden Road,\nAgarkar Nagar, Pune,\nMaharashtra, 411001",
