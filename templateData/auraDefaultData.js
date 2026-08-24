@@ -29,7 +29,7 @@ const auraDefaultData = {
   coupleMessageRouteLink: "https://maps.app.goo.gl/fKxi3eDGsTSd5Aaz6?g_st=ic",
   coupleMessageCarouselImages: [],
   marriageCountdownTitle: "The Journey Begins",
-  marriageCountdownDate: "2026-09-21",
+  marriageCountdownDate: "2026-12-21",
   marriageCountdownDescription:
     "Surrounded by family and friends, we can't wait to celebrate this beautiful moment with you.",
   whatsappNumber: "+919876543210",

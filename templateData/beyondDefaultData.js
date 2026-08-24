@@ -38,7 +38,7 @@ const beyondDefaultData = {
     "Guests can enjoy hassle free parking facilities available at the venue.",
 
   marriageCountdownTitle: "The Journey Begins",
-  marriageCountdownDate: "2026-09-21",
+  marriageCountdownDate: "2026-12-21",
   marriageCountdownDescription:
     "Surrounded by family and friends, we can't wait to celebrate this beautiful moment with you.",
 

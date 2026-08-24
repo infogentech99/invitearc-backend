@@ -5,11 +5,16 @@ const hitchedDefaultData = {
   eventIntro: "On the following events",
   groomName: "Dhiraj",
   brideName: "Ritika",
+   religiousMantra: "|| श्री गणेशाय नमः ||",
   groomDetails: "(S/o Mrs. Reena and Mr. Manjit Singh)",
   brideDetails: "(D/o Mrs. Kalpana Kapoor and Mr. Raj Kapoor)",
   brideGrandParentsName: "(Granddaughter of Shri J.S. Kapoor)",
   blessingMessage: "With the heavenly blessings of",
+  grandParentName:"Late Smt. Kamla Kapoor",
   noteText: "Your presence is the greatest gift to us.",
+ thankyoutitle: "With Love From Us",
+  thankyoumessage:
+    "Thank you for being part our journey. Your presence makes this celebration truly meaningful, and we look forward to sharing these cherished moments with you.",
   coupleMessageTitle: "Introducing",
   coupleMessageDescription: "The Couple",
   coupleMessageThingsToKnowTitle: "A Guide for Guests",
@@ -29,11 +34,11 @@ const hitchedDefaultData = {
   coupleMessageRouteLink: "https://maps.app.goo.gl/fKxi3eDGsTSd5Aaz6?g_st=ic",
   coupleMessageCarouselImages: [],
   marriageCountdownTitle: "The Journey Begins",
-  marriageCountdownDate: "2026-09-21",
+  marriageCountdownDate: "2026-12-21",
   marriageCountdownDescription:
     "Surrounded by family and friends, we can't wait to celebrate this beautiful moment with you.",
   whatsappNumber: "+919876543210",
-
+religiousSign:"",
   events: [
     {
       title_ceremony: "Mehendi",
