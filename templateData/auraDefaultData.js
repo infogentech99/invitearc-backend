@@ -33,7 +33,6 @@ const auraDefaultData = {
   marriageCountdownDescription:
     "Surrounded by family and friends, we can't wait to celebrate this beautiful moment with you.",
   whatsappNumber: "+919876543210",
-
   events: [
     {
       title_ceremony: "Mehendi",
