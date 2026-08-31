@@ -2,6 +2,7 @@ const mayraDefaultData = {
   groomName: "VEERENDRA",
   brideName: "MEERA",
   religiousMantra: "ॐ श्री गणेशाय नम",
+  familyName: " Chauhan Family",
   groomDetails: "(Son of Mrs. Kanchan & Mr. Sanjay Bhawnani)",
   blessingMessage: "With the heavenly blessings of",
   brideGrandParentsName: "Shri Rajesh Gaur & Shrimati Sunita Gaur",

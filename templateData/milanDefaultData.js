@@ -1,5 +1,5 @@
 const milanDefaultData = {
-   mainHeading: "JOIN US AS WE CELEBRATE",
+   mainHeading: "JOIN US AS WE CELEBRATE A BEAUTIFUL JOURNEY OF LOVE THAT LASTS FOREVERJOIN US AS WE CELEBRATE ",
   title: "A BEAUTIFUL JOURNEY OF LOVE",
   subTitle: "THAT LASTS FOREVER",
   groomName: "ROSHAN",
@@ -8,6 +8,7 @@ const milanDefaultData = {
   blessingMessage:"With grateful hearts and joyful spirits, we invite you to witness the celebration of our love and the beginning of our forever. Your presence will make our day truly special.",
   brideParentsTitle:"Beloved Daughter of",
   brideParentsDetails:"Mr. & Mrs. Sharma",
+   eventDate:"20ᵗʰ - 21ˢᵗ November, 2026",
   groomParentsTitle:"Beloved Son of",
   groomParentsDetails:"Mr. & Mrs. Kapoor",
   venue: "The Oberoi Amarvilas Agra",
