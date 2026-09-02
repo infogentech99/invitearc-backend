@@ -3,6 +3,7 @@ const auraDefaultData = {
   headline: "INVITES",
   inviteLine: "you to join us in the wedding celebrations of",
   eventIntro: "On the following events",
+  religiousMantra: "ॐ श्री गणेशाय नम",
   groomName: "Dhiraj",
   brideName: "Ritika",
   groomDetails: "S/O Savita Kapoor and Sunil Kapoor",
@@ -10,6 +11,9 @@ const auraDefaultData = {
   brideGrandParentsName: "Shri Rajesh Kapoor  & Shrimati Sunita Kapoor ",
   blessingMessage: "With the heavenly blessings of",
   noteText: "Your presence is the greatest gift to us.",
+   thankyoutitle: "With Love From Us",
+  thankyoumessage:
+    "Thank you for being part our journey. Your presence makes this celebration truly meaningful, and we look forward to sharing these cherished moments with you.",
   coupleMessageTitle: "Introducing",
   coupleMessageDescription: "The Couple",
   coupleMessageThingsToKnowTitle: "A Guide for Guests",
@@ -17,9 +21,9 @@ const auraDefaultData = {
     "To help you feel at ease and enjoy every moment of the celebrations, we’ve gathered a few thoughtful details we’d love for you to know before the big day.",
   coupleMessageClosingTitle: "Awaiting the Pleasure of Your Company",
   coupleMessageRsvpText: "Click the link to RSVP",
-  coupleMessageLocationTitle: "Location",
-  coupleMessageLocationDetails:
-    "The Central Park Hotel\nBund Garden Road,\nAgarkar Nagar, Pune,\nMaharashtra, 411001",
+
+  coupleMessageStaffTitle : "Staff",
+ coupleMessageStaffDetails:"For those traveling from afar, Royal Orchid Suites offers a comfortable stay nearby.",
   coupleMessageWeatherTitle: "Weather",
   coupleMessageWeatherDetails:
     "Clouds may drop by uninvited, but so will great vibes and better dance moves. A little rain never stopped a good celebration anyway.",
