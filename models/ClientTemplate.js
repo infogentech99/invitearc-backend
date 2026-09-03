@@ -24,4 +24,5 @@ const clientTemplateSchema = mongoose.Schema(
 );
 
 
+
 export default mongoose.model("ClientTemplate", clientTemplateSchema);
