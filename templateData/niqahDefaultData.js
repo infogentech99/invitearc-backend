@@ -1,5 +1,5 @@
 const niqahDefaultData = {
-groomName: "FARDEEN",
+  groomName: "FARDEEN",
   brideName: "ZARIN",
   religiousMantra: "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْم",
   brideGrandParentsName: "Mrs. Fatima Begum & Mr. Zafar Ahmed",
@@ -12,8 +12,8 @@ groomName: "FARDEEN",
   thankyoutitle: "With Love From Us",
   thankyoumessage:
     "Thank you for being part our journey. Your presence makes this celebration truly meaningful, and we look forward to sharing these cherished moments with you.",
-  
-coupleMessageTitle: "Introducing",
+  eventDate: "Saturday, April 18th 2026",
+  coupleMessageTitle: "Introducing",
   coupleMessageDescription: "The Couple",
   coupleMessageThingsToKnowTitle: "A Guide for Guests",
   coupleMessageStaffTitle: "Staff",
@@ -32,18 +32,19 @@ coupleMessageTitle: "Introducing",
   rsvpMode: "whatsapp",
   Logo: "",
   marriageCountdownTitle: "The Journey Begins",
-  marriageCountdownDate: "2026-12-21", 
+  marriageCountdownDate: "2026-12-21",
   marriageCountdownDescription:
     "Surrounded by family and friends, we can't wait to celebrate this beautiful moment with you.",
 
-   events : [
+  events: [
     {
       title_ceremony: "Mehendi",
-      image: "https://res.cloudinary.com/drl4fmhrq/image/upload/v1784716491/mehendi.0g4oirx0fp_c1_zghaqb.webp",
+      image:
+        "https://res.cloudinary.com/drl4fmhrq/image/upload/v1784716491/mehendi.0g4oirx0fp_c1_zghaqb.webp",
       date: "Saturday, April 18th 2026",
       time: "Join Us at 11 am",
       venue: "The Leela Palace, Udaipur",
-       venue_address:
+      venue_address:
         "Bund Garden Road, Agarkar Nagar\nPune, Maharashtra, 411001",
       theme: "Glitz & Glam: Shimmer, sequins & Statement Fits",
       link: "https://maps.app.goo.gl/53z68ksx4cYgoNm59",
@@ -51,24 +52,25 @@ coupleMessageTitle: "Introducing",
 
     {
       title_ceremony: "Nikah",
-      image: "https://res.cloudinary.com/drl4fmhrq/image/upload/v1784716491/nikah.0izz62_jmukuu_ia5pdq.webp",
+      image:
+        "https://res.cloudinary.com/drl4fmhrq/image/upload/v1784716491/nikah.0izz62_jmukuu_ia5pdq.webp",
       date: "Saturday, April 18th 2026",
       time: "Join Us at 11 am",
       venue: "The Leela Palace, Udaipur",
-       venue_address:
+      venue_address:
         "Bund Garden Road, Agarkar Nagar\nPune, Maharashtra, 411001",
       theme: "Glitz & Glam: Shimmer, sequins & Statement Fits",
       link: "https://maps.app.goo.gl/mxcwCxWhH1TXBC8c9",
     },
 
-
     {
       title_ceremony: "Walima",
-      image: "https://res.cloudinary.com/drl4fmhrq/image/upload/v1784716491/walima.001-0bgj0p0i2_qdxyv4.webp",
+      image:
+        "https://res.cloudinary.com/drl4fmhrq/image/upload/v1784716491/walima.001-0bgj0p0i2_qdxyv4.webp",
       date: "Saturday, April 18th 2026",
       time: "Join Us at 11 am",
       venue: "The Leela Palace, Udaipur",
-       venue_address:
+      venue_address:
         "Bund Garden Road, Agarkar Nagar\nPune, Maharashtra, 411001",
       theme: "Glitz & Glam: Shimmer, sequins & Statement Fits",
       link: "https://maps.app.goo.gl/f599YkTSEYKDEK5L7",
@@ -82,6 +84,6 @@ coupleMessageTitle: "Introducing",
     "Join us as we celebrate the wedding of FARDEEN and ZARIN.",
   sharePreviewImage:
     "https://res.cloudinary.com/drl4fmhrq/image/upload/v1783145066/og_n_yisygg.jpg",
-}
+};
 
 export default niqahDefaultData;

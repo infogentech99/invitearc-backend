@@ -6,6 +6,7 @@ const templateSchema = new mongoose.Schema(
     slug: {
       type: String,
       unique: true,
+      index: true, 
     },
     indprice: Number,
     usaprice:Number,
