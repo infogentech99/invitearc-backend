@@ -228,15 +228,20 @@ export const getMe = async (req, res) => {
 };
 
 export const handleForgotPassword = async (req, res) => {
-  const { email } = req.body;
+  const email = req.body.email?.trim().toLowerCase();
   try {
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: "user does not exist" });
     }
 
     const generatedotp = Math.floor(100000 + Math.random() * 900000);
-   
+
+    await Otp.deleteMany({ email });
 
     const newOtp = new Otp({
       email,
@@ -257,8 +262,13 @@ export const handleForgotPassword = async (req, res) => {
 };
 
 export const verifyForgotPassword = async (req, res) => {
-  const { email, otp } = req.body;
+  const email = req.body.email?.trim().toLowerCase();
+  const otp = String(req.body.otp || "").trim();
   try {
+    if (!email || !/^\d{6}$/.test(otp)) {
+      return res.status(400).json({ message: "Enter a valid six-digit OTP" });
+    }
+
     const otpRecord = await Otp.findOne({ email, otp });
     if (
       !otpRecord ||
@@ -279,8 +289,18 @@ export const verifyForgotPassword = async (req, res) => {
 };
 
 export const handleResetPassword = async (req, res) => {
-  const { email, otp, newPassword } = req.body;
+  const email = req.body.email?.trim().toLowerCase();
+  const otp = String(req.body.otp || "").trim();
+  const { newPassword } = req.body;
   try {
+    if (!email || !/^\d{6}$/.test(otp)) {
+      return res.status(400).json({ message: "Enter a valid six-digit OTP" });
+    }
+
+    if (!newPassword || newPassword.length < 8) {
+      return res.status(400).json({ message: "Password must be at least 8 characters" });
+    }
+
     const otpRecord = await Otp.findOne({ email, otp });
     if (
       !otpRecord ||

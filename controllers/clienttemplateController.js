@@ -85,7 +85,7 @@ export const buyTemplate = async (req, res) => {
 
 export const createRazorpayOrder = async (req, res) => {
   try {
-    const { templateId, country } = req.body;
+    const { templateId, country, serviceType = "self-edit" } = req.body;
     console.log("Country:", country);
     const template = await Template.findById(templateId);
 
@@ -100,10 +100,10 @@ export const createRazorpayOrder = async (req, res) => {
     let currency;
 
     if (country === "IN") {
-      amount = Math.round(template.indprice * 100);
+      amount = Math.round((template.indprice + (serviceType === "expert" ? 1000 : 0)) * 100);
       currency = "INR";
     } else {
-      amount = Math.round(template.usaprice * 100);
+      amount = Math.round((template.usaprice + (serviceType === "expert" ? 20 : 0)) * 100);
       currency = "USD";
     }
     if (amount <= 0) {
