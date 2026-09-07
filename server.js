@@ -12,7 +12,7 @@ import saanjhDefaultData from "./templateData/saanjhDefaultData.js";
 import milanDefaultData from "./templateData/milanDefaultData.js";
 import biyeDefaultData from "./templateData/biyeDefaultData.js";
 import auraDefaultData from "./templateData/auraDefaultData.js";
-import laavanDefaultData from "./templateData/laavanDefaultData.js";
+import jodiDefaultData from "./templateData/jodiDefaultData.js";
 import starlightDefaultData from "./templateData/starlightDefaultData.js";
 import mayraDefaultData from "./templateData/mayraDefaultData.js";
 const app = express();
@@ -91,20 +91,20 @@ const seedTemplates = async () => {
         defaultData: sohalaDefaultData,
       },
       {
-        title: "Laavan",
-        slug: "laavan",
+        title: "Jodi",
+        slug: "jodi",
         indprice: 3999,
         usaprice: 69,
         category: "Sikh Weddings",
         previewImage: "/assets/preview-images/laavan.webp",
-        componentKey: "laavan",
-        defaultData: laavanDefaultData,
+        componentKey: "jodi",
+        defaultData: jodiDefaultData,
       },
       {
         title: "Starlight",
         slug: "starlight",
         indprice: 3999,
-        usaprice: 69,
+        usaprice: 33,
         category: "Sikh Weddings",
         previewImage: "/assets/preview-images/starlight.webp",
         componentKey: "starlight",
@@ -151,16 +151,16 @@ const seedTemplates = async () => {
         defaultData: vowsDefaultData,
       },
 
-      {
-        title: "Beyond",
-        slug: "beyond",
-        indprice: 3339,
-        usaprice: 59,
-        category: "Christian Weddings",
-        previewImage: "/assets/preview-images/beyond.webp",
-        componentKey: "beyond",
-        defaultData: beyondDefaultData,
-      },
+      // {
+      //   title: "Beyond",
+      //   slug: "beyond",
+      //   indprice: 3339,
+      //   usaprice: 59,
+      //   category: "Christian Weddings",
+      //   previewImage: "/assets/preview-images/beyond.webp",
+      //   componentKey: "beyond",
+      //   defaultData: beyondDefaultData,
+      // },
     ];
 
     for (const template of templates) {

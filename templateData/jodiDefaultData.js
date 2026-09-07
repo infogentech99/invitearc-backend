@@ -1,4 +1,4 @@
-const laavanDefaultData = {
+const jodiDefaultData = {
   groomName: "Harpreet",
   brideName: "Ritika",
   religiousMantra: "ਪ੍ਰੀਤ ਸਹਿਤ ਆਪ ਸਭਦਾ ਜੀ ਆਇਆਂ ਨੂੰ...",
@@ -97,4 +97,4 @@ const laavanDefaultData = {
 
 
 
-export default laavanDefaultData;
+export default jodiDefaultData;
