@@ -5,6 +5,7 @@ import Template from "./models/Template.js";
 import templateRoutes from "./routes/templateRoutes.js";
 import clientTemplateRoutes from "./routes/clienttemplateRoutes.js";
 import authRouter from "./routes/authRoutes.js";
+import adminRouter from "./routes/adminRoutes.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import hitchedDefaultData from "./templateData/hitchedDefaultData.js";
@@ -194,6 +195,7 @@ const startServer = async () => {
   app.use("/api/template", templateRoutes);
   app.use("/api/client-templates", clientTemplateRoutes);
   app.use("/api/auth", authRouter);
+  app.use("/api/admin", adminRouter);
   app.use("/api/upload", uploadRoutes);
 
   app.get("/", (req, res) => {
