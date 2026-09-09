@@ -34,12 +34,10 @@ const beyondDefaultData = {
   coupleMessageParkingTitle: "Parking",
   coupleMessageParkingDetails:
     "Guests can enjoy hassle free parking facilities available at the venue.",
-
   marriageCountdownTitle: "The Journey Begins",
   marriageCountdownDate: "2026-12-21",
   marriageCountdownDescription:
     "Surrounded by family and friends, we can't wait to celebrate this beautiful moment with you.",
-
   backgroundMusicUrl: "",
   backgroundMusicFileName: "",
   sharePreviewTitle: "Gaurav & Neha Wedding Invitation",
