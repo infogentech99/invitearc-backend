@@ -24,10 +24,10 @@ export const protectAdmin = async (req, res, next) => {
 
     const admin = await Admin.findById(decoded.id);
 
-    if (!admin || admin.status !== "active") {
+    if (!admin) {
       return res.status(404).json({
         success: false,
-        message: "Admin not found or inactive",
+        message: "Admin not found",
       });
     }
 

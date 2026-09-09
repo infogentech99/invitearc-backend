@@ -1,6 +1,140 @@
 import jwt from "jsonwebtoken";
 import Admin from "../models/Admin.js";
+import User from "../models/User.js";
+import Template from "../models/Template.js";
+import ClientTemplate from "../models/ClientTemplate.js";
 import config from "../config/config.js";
+
+const toCurrency = (value) => {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  }).format(value || 0);
+};
+
+export const getAdminDashboardStats = async (req, res) => {
+  try {
+    const [userCount, templateCount, orderCount] = await Promise.all([
+      User.countDocuments(),
+      Template.countDocuments(),
+      ClientTemplate.countDocuments(),
+    ]);
+
+    const users = await User.find({})
+      .select("name email mobileNumber role createdAt")
+      .sort({ createdAt: -1 })
+      .lean();
+
+    const orders = await ClientTemplate.find()
+      .populate({ path: "userId", select: "name email" })
+      .populate({ path: "templateId", select: "title indprice usaprice previewImage" })
+      .sort({ createdAt: -1 })
+      .lean();
+
+    const revenue = orders.reduce((sum, order) => {
+      return sum + Number(order.templateId?.indprice || 0);
+    }, 0);
+
+    const recentOrders = orders.slice(0, 5).map((order) => ({
+      id: order._id,
+      userName: order.userId?.name || "Unknown user",
+      templateTitle: order.templateId?.title || "Unknown template",
+      amount: Number(order.templateId?.indprice || 0),
+      date: order.createdAt,
+      status: "Paid",
+    }));
+
+    const templateUsageMap = new Map();
+
+    orders.forEach((order) => {
+      const template = order.templateId;
+      if (!template || !template.title) return;
+
+      const current = templateUsageMap.get(template.title) || {
+        title: template.title,
+        uses: 0,
+        price: Number(template.indprice || 0),
+        previewImage: template.previewImage || "",
+      };
+
+      current.uses += 1;
+      templateUsageMap.set(template.title, current);
+    });
+
+    const popularTemplates = Array.from(templateUsageMap.values())
+      .sort((a, b) => b.uses - a.uses)
+      .slice(0, 4)
+      .map((item) => ({
+        title: item.title,
+        uses: item.uses,
+        price: item.price,
+        previewImage: item.previewImage,
+      }));
+
+    const monthSeriesStart = new Date();
+    monthSeriesStart.setDate(1);
+    monthSeriesStart.setMonth(monthSeriesStart.getMonth() - 11);
+    monthSeriesStart.setHours(0, 0, 0, 0);
+
+    const monthlySales = await ClientTemplate.aggregate([
+      {
+        $match: {
+          createdAt: { $gte: monthSeriesStart },
+        },
+      },
+      {
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m", date: "$createdAt" } },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ]);
+
+    const monthMap = new Map(monthlySales.map((item) => [item._id, item.count]));
+    const fullMonthSeries = [];
+
+    for (let i = 0; i < 12; i += 1) {
+      const date = new Date(monthSeriesStart.getFullYear(), monthSeriesStart.getMonth() + i, 1);
+      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+
+      fullMonthSeries.push({
+        _id: key,
+        count: monthMap.get(key) || 0,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        totals: {
+          templates: templateCount,
+          users: userCount,
+          orders: orderCount,
+          revenue,
+          revenueDisplay: toCurrency(revenue),
+        },
+        users: users.map((user) => ({
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          mobileNumber: user.mobileNumber,
+          role: user.role || "user",
+          createdAt: user.createdAt,
+        })),
+        recentOrders,
+        popularTemplates,
+        monthlySales: fullMonthSeries,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
 export const loginAdmin = async (req, res) => {
   try {
