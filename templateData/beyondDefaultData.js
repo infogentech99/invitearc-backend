@@ -15,12 +15,10 @@ const beyondDefaultData = {
   blessingMessage: "With the godly blessings of",
   eventIntro: "On the following events",
   coupleTitle: "Introducing",
-
   coupleTitle: "INTRODUCTION",
   thankyoutitle: "With Love From Us",
   thankyoumessage:
     "Thank you for being part our journey. Your presence makes this celebration truly meaningful, and we look forward to sharing these cherished moments with you.",
-
   coupleMessageThingsToKnowTitle: "A Guide For Guests",
   coupleMessageThingsToKnowDescription:
     "Your presence means the world to us. To make your experience <br /> effortless and enjoyable, we've gathered a few useful details below.",
