@@ -9,7 +9,6 @@ import {
 import { protectAdmin } from "../middleware/adminAuthMiddleware.js";
 
 const router = Router();
-
 router.post("/login", loginAdmin);
 router.post("/refresh-token", refreshAdminToken);
 router.post("/logout", logoutAdmin);
