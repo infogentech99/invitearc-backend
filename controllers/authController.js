@@ -8,7 +8,12 @@ import sendEmail from "../config/sendEmail.js";
 export const register = async (req, res) => {
   try {
     const { name, email, mobileNumber, password } = req.body;
-    const existUser = await User.findOne({ email, mobileNumber });
+    const normalizedMobileNumber = String(mobileNumber || "").trim();
+
+    const existUser = await User.findOne({
+      email,
+      mobileNumber: normalizedMobileNumber,
+    });
 
     if (existUser) {
       return res.status(400).json({
@@ -21,7 +26,7 @@ export const register = async (req, res) => {
     const user = await User.create({
       name,
       email,
-      mobileNumber,
+      mobileNumber: normalizedMobileNumber,
       password: hashedpassword,
     });
 
