@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 import Admin from "../models/Admin.js";
 import User from "../models/User.js";
 import Template from "../models/Template.js";
@@ -36,7 +37,7 @@ export const getAdminDashboardStats = async (req, res) => {
       return sum + Number(order.templateId?.indprice || 0);
     }, 0);
 
-    const recentOrders = orders.slice(0, 5).map((order) => ({
+    const paymentRecords = orders.map((order) => ({
       id: order._id,
       userName: order.userId?.name || "Unknown user",
       templateTitle: order.templateId?.title || "Unknown template",
@@ -44,6 +45,8 @@ export const getAdminDashboardStats = async (req, res) => {
       date: order.createdAt,
       status: "Paid",
     }));
+
+    const recentOrders = paymentRecords.slice(0, 6);
 
     const templateUsageMap = new Map();
 
@@ -123,6 +126,7 @@ export const getAdminDashboardStats = async (req, res) => {
           role: user.role || "user",
           createdAt: user.createdAt,
         })),
+        payments: paymentRecords,
         recentOrders,
         popularTemplates,
         monthlySales: fullMonthSeries,
@@ -147,27 +151,22 @@ export const loginAdmin = async (req, res) => {
       });
     }
 
-    const expectedEmail = (process.env.ADMIN_EMAIL || "admin@invitearc.com").trim().toLowerCase();
-    const expectedPassword = process.env.ADMIN_PASSWORD || "Admin@123";
+    const normalizedEmail = String(email).trim().toLowerCase();
+    const admin = await Admin.findOne({ email: normalizedEmail });
 
-    if (
-      email.trim().toLowerCase() !== expectedEmail ||
-      password !== expectedPassword
-    ) {
+    if (!admin) {
       return res.status(401).json({
         success: false,
         message: "Invalid admin credentials",
       });
     }
 
-    const admin = await Admin.findOne({
-      name: process.env.ADMIN_NAME || "InviteArc Admin",
-    });
+    const passwordMatches = await bcrypt.compare(password, admin.password);
 
-    if (!admin) {
+    if (!passwordMatches) {
       return res.status(401).json({
         success: false,
-        message: "Admin record not found in database",
+        message: "Invalid admin credentials",
       });
     }
 
@@ -197,6 +196,7 @@ export const loginAdmin = async (req, res) => {
       admin: {
         id: admin._id,
         name: admin.name,
+        email: admin.email,
         role: "admin",
       },
       accessToken,
