@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+
 const clientTemplateSchema = mongoose.Schema(
   {
     userId: { 
