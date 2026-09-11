@@ -23,6 +23,4 @@ const clientTemplateSchema = mongoose.Schema(
   { timestamps: true },
 );
 
-
-
 export default mongoose.model("ClientTemplate", clientTemplateSchema);
