@@ -14,6 +14,7 @@ import { protect } from "../middleware/authMiddleware.js";
 
 const router = Router();
 
+
 // post /api/auth/register
 router.post("/register", register);
 
