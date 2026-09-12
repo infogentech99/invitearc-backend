@@ -37,7 +37,7 @@ const orderSchema = new mongoose.Schema(
 
     serviceType: {
       type: String,
-      enum: ["self-edit", "expert"],
+      enum: ["self-edit", "team-edit"],
       default: "self-edit",
     },
 
@@ -48,6 +48,16 @@ const orderSchema = new mongoose.Schema(
     },
 
     metaPurchaseSent: {
+      type: Boolean,
+      default: false,
+    },
+
+    userConfirmationSent: {
+      type: Boolean,
+      default: false,
+    },
+
+    adminConfirmationSent: {
       type: Boolean,
       default: false,
     },

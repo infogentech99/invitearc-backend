@@ -5,6 +5,7 @@ import generateSlug from "../utils/generateslug.js";
 import Template from "../models/Template.js";
 import sendEmail from "../config/sendEmail.js";
 import Order from "../models/Order.js";
+import sendPurchaseConfirmationEmails from "../utils/purchaseConfirmationEmail.js";
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET,
@@ -66,7 +67,7 @@ export const buyTemplate = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: "Template not found",
-      }); 
+      });
     }
 
     const clientTemplate = await buildClientTemplate(req.user, template);
@@ -83,64 +84,6 @@ export const buyTemplate = async (req, res) => {
     });
   }
 };
-
-// export const createRazorpayOrder = async (req, res) => {
-//   try {
-//     const { templateId, country, serviceType = "self-edit" } = req.body;
-//     console.log("Country:", country);
-//     const template = await Template.findById(templateId);
-
-//     if (!template) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Template not found",
-//       });
-//     }
-
-//     let amount;
-//     let currency;
-
-//     if (country === "IN") {
-//       amount = Math.round((template.indprice + (serviceType === "expert" ? 1000 : 0)) * 100);
-//       currency = "INR";
-//     } else {
-//       amount = Math.round((template.usaprice + (serviceType === "expert" ? 20 : 0)) * 100);
-//       currency = "USD";
-//     }
-//     if (amount <= 0) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Invalid template price for Razorpay order.",
-//       });
-//     }
-
-//     const order = await razorpay.orders.create({
-//       amount,
-//       // currency: "INR",
-//       currency,
-//       receipt: `ord_${Date.now()}`,
-//       payment_capture: 1,
-//     });
-
-//     res.json({
-//       success: true,
-//       data: {
-//         orderId: order.id,
-//         amount: order.amount,
-//         currency: order.currency,
-//         key: process.env.RAZORPAY_KEY_ID,
-//         templateId,
-//       },
-//     });
-//   } catch (error) {
-//     console.error("Razorpay order creation error:", error);
-//     res.status(500).json({
-//       success: false,
-//       message: error.message || "Unable to create Razorpay order.",
-//     });
-//   }
-// };
-
 
 export const createRazorpayOrder = async (req, res) => {
   try {
@@ -162,16 +105,12 @@ export const createRazorpayOrder = async (req, res) => {
 
     if (country === "IN") {
       amount = Math.round(
-        (template.indprice +
-          (serviceType === "expert" ? 1000 : 0)) *
-          100
+        (template.indprice + (serviceType === "team-edit" ? 1000 : 0)) * 100,
       );
       currency = "INR";
     } else {
       amount = Math.round(
-        (template.usaprice +
-          (serviceType === "expert" ? 20 : 0)) *
-          100
+        (template.usaprice + (serviceType === "team-edit" ? 20 : 0)) * 100,
       );
       currency = "USD";
     }
@@ -225,81 +164,11 @@ export const createRazorpayOrder = async (req, res) => {
   }
 };
 
-
-
-
-// export const verifyRazorpayPayment = async (req, res) => {
-//   try {
-//     const {
-//       razorpayOrderId,
-//       razorpayPaymentId,
-//       razorpaySignature,
-//       templateId,
-//     } = req.body;
-
-//     if (
-//       !razorpayOrderId ||
-//       !razorpayPaymentId ||
-//       !razorpaySignature ||
-//       !templateId
-//     ) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Missing payment verification fields",
-//       });
-//     }
-
-//     const signature = crypto
-//       .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
-//       .update(`${razorpayOrderId}|${razorpayPaymentId}`)
-//       .digest("hex");
-
-//     if (signature !== razorpaySignature) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Invalid Razorpay signature",
-//       });
-//     }
-
-//     const template = await Template.findById(templateId);
-//     if (!template) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Template not found",
-//       });
-//     }
-
-//     const clientTemplate = await buildClientTemplate(req.user, template);
-
-//     res.status(201).json({
-//       success: true,
-//       message: "Payment verified and template purchased successfully",
-//       data: clientTemplate,
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };
-
-
-
-
 export const verifyRazorpayPayment = async (req, res) => {
   try {
-    const {
-      razorpayOrderId,
-      razorpayPaymentId,
-      razorpaySignature,
-    } = req.body;
+    const { razorpayOrderId, razorpayPaymentId, razorpaySignature } = req.body;
 
-    if (
-      !razorpayOrderId ||
-      !razorpayPaymentId ||
-      !razorpaySignature
-    ) {
+    if (!razorpayOrderId || !razorpayPaymentId || !razorpaySignature) {
       return res.status(400).json({
         success: false,
         message: "Missing payment verification fields",
@@ -308,10 +177,7 @@ export const verifyRazorpayPayment = async (req, res) => {
 
     // 1. Verify Razorpay payment signature
     const signature = crypto
-      .createHmac(
-        "sha256",
-        process.env.RAZORPAY_KEY_SECRET
-      )
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
       .update(`${razorpayOrderId}|${razorpayPaymentId}`)
       .digest("hex");
 
@@ -342,22 +208,72 @@ export const verifyRazorpayPayment = async (req, res) => {
       });
     }
 
-    // 4. Save payment ID
-    order.razorpayPaymentId = razorpayPaymentId;
+    if (order.status === "PAID") {
+      const existingClientTemplate = await ClientTemplate.findOne({
+        userId: order.userId,
+        templateId: order.templateId,
+      }).populate("templateId");
 
-    // Do NOT create ClientTemplate here.
-    // Razorpay webhook will mark it PAID and create the template.
+      if (!existingClientTemplate) {
+        return res.status(404).json({
+          success: false,
+          message: "Purchased template not found",
+        });
+      }
+
+      const existingUser = req.user;
+      await sendPurchaseConfirmationEmails({
+        order,
+        template: existingClientTemplate.templateId,
+        user: existingUser,
+        payment: {
+          id: order.razorpayPaymentId,
+          amount: order.amount,
+          currency: order.currency,
+        },
+      });
+
+      return res.status(200).json({
+        success: true,
+        message: "Payment already verified",
+        data: existingClientTemplate,
+      });
+    }
+
+    // 4. Create the editable template immediately after payment verification.
+    // The webhook can arrive later, so the paid order is used as the idempotency guard.
+    const template = await Template.findById(order.templateId);
+
+    if (!template) {
+      return res.status(404).json({
+        success: false,
+        message: "Template not found",
+      });
+    }
+
+    const clientTemplate = await buildClientTemplate(order.userId, template);
+
+    // 5. Save payment ID and mark the order complete
+    order.razorpayPaymentId = razorpayPaymentId;
+    order.status = "PAID";
 
     await order.save();
+
+    await sendPurchaseConfirmationEmails({
+      order,
+      template,
+      user: req.user,
+      payment: {
+        id: razorpayPaymentId,
+        amount: order.amount,
+        currency: order.currency,
+      },
+    });
 
     return res.status(200).json({
       success: true,
       message: "Payment verified successfully",
-      data: {
-        orderId: order.razorpayOrderId,
-        paymentId: order.razorpayPaymentId,
-        status: order.status,
-      },
+      data: clientTemplate,
     });
   } catch (error) {
     console.error("Payment verification error:", error);
@@ -368,9 +284,6 @@ export const verifyRazorpayPayment = async (req, res) => {
     });
   }
 };
-
-
-
 
 //---- /api/client-templates/my-templates -----
 export const getMyTemplates = async (req, res) => {
@@ -558,47 +471,141 @@ export const updateShareSlug = async (req, res) => {
       data: clientTemplate,
     });
 
-  await sendEmail(
+    await sendEmail(
       req.user.email,
       "🎉 Your Invitation Link is Ready",
       `
-  <div style="font-family: Arial, sans-serif; max-width:600px; margin:auto;">
-    <h2 style="color:#861E1D;">InviteArc</h2>
+  <div style="
+    font-family:Arial,Helvetica,sans-serif;
+    max-width:600px;
+    margin:auto;
+    padding:20px;
+    background:#f7f7f7;
+  ">
+    <div style="
+      background:#ffffff;
+      border-radius:14px;
+      overflow:hidden;
+    ">
 
-    <p>Hello ${req.user.name || ""},</p>
+      <div style="
+        background:#861E1D;
+        padding:24px;
+        text-align:center;
+      ">
+        <h2 style="
+          margin:0;
+          color:#ffffff;
+        ">
+          InviteArc
+        </h2>
 
-    <p>Your invitation link has been generated successfully.</p>
+        <p style="
+          margin:6px 0 0;
+          color:#f8dddd;
+          font-size:13px;
+        ">
+          Beautiful Digital Invitations
+        </p>
+      </div>
 
-    <p>
-      <a 
-        href="${shareUrl}"
-        style="
-          background:#861E1D;
-          color:white;
-          padding:12px 20px;
-          text-decoration:none;
-          border-radius:6px;
-          display:inline-block;
-        "
-      >
-        View Invitation
-      </a>
-    </p>
+      <div style="padding:30px;">
 
-    <p>Or copy this link:</p>
+        <p>Hello ${req.user.name || "there"},</p>
 
-    <p>${shareUrl}</p>
+        <p style="
+          color:#555;
+          line-height:1.6;
+        ">
+          Your invitation link has been generated successfully.
+          You can now share it with your family and friends.
+        </p>
 
-    <hr />
+        <div style="
+          background:#fdf7f6;
+          border:1px solid #ead8d7;
+          border-radius:10px;
+          padding:16px;
+          margin:20px 0;
+        ">
+          <p style="
+            margin:0 0 8px;
+            font-size:11px;
+            font-weight:bold;
+            color:#777;
+            text-transform:uppercase;
+          ">
+            Your Invitation Link
+          </p>
 
-    <p style="color:#666;font-size:13px;">
-      Thank you for choosing InviteArc ❤️
-    </p>
+          <p style="
+            margin:0;
+            color:#861E1D;
+            font-size:14px;
+            word-break:break-all;
+          ">
+            ${shareUrl}
+          </p>
+        </div>
+
+        <div style="
+          text-align:center;
+          margin:25px 0;
+        ">
+          <a
+            href="${shareUrl}"
+            style="
+              background:#861E1D;
+              color:#ffffff;
+              padding:13px 24px;
+              text-decoration:none;
+              border-radius:7px;
+              display:inline-block;
+              font-size:14px;
+              font-weight:bold;
+            "
+          >
+            View Invitation
+          </a>
+        </div>
+
+        <p style="
+          color:#888;
+          font-size:12px;
+          text-align:center;
+        ">
+          You can copy the link above and share it directly with your guests.
+        </p>
+
+      </div>
+
+      <div style="
+        padding:18px;
+        background:#fafafa;
+        border-top:1px solid #eeeeee;
+        text-align:center;
+      ">
+        <p style="
+          margin:0;
+          color:#888;
+          font-size:12px;
+        ">
+          Thank you for choosing InviteArc ❤️
+        </p>
+
+        <p style="
+          margin:6px 0 0;
+          color:#aaa;
+          font-size:11px;
+        ">
+          © ${new Date().getFullYear()} InviteArc
+        </p>
+      </div>
+
+    </div>
   </div>
   `,
     );
-
-
   } catch (error) {
     res.status(500).json({
       success: false,

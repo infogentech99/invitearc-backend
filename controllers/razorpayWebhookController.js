@@ -5,6 +5,7 @@ import Template from "../models/Template.js";
 import generateSlug from "../utils/generateslug.js";
 import User from "../models/User.js";
 import { sendMetaPurchaseEvent } from "../utils/metaConversions.js";
+import sendPurchaseConfirmationEmails from "../utils/purchaseConfirmationEmail.js";
 
 const generateUniqueCode = () =>
   Math.random().toString(36).slice(2, 7);
@@ -150,6 +151,15 @@ export const razorpayWebhook = async (req, res) => {
 
 // 11. Send Purchase event to Meta
 const user = await User.findById(dbOrder.userId);
+
+      if (user) {
+        await sendPurchaseConfirmationEmails({
+          order: dbOrder,
+          template,
+          user,
+          payment,
+        });
+      }
 
 if (!user) {
   console.error(
