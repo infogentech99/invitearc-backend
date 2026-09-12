@@ -148,8 +148,6 @@ export const razorpayWebhook = async (req, res) => {
       });
 
 
-
-
 // 11. Send Purchase event to Meta
 const user = await User.findById(dbOrder.userId);
 
