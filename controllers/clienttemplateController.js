@@ -4,6 +4,7 @@ import ClientTemplate from "../models/ClientTemplate.js";
 import generateSlug from "../utils/generateslug.js";
 import Template from "../models/Template.js";
 import sendEmail from "../config/sendEmail.js";
+import Order from "../models/Order.js";
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET,
@@ -65,7 +66,7 @@ export const buyTemplate = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: "Template not found",
-      });
+      }); 
     }
 
     const clientTemplate = await buildClientTemplate(req.user, template);
@@ -83,10 +84,70 @@ export const buyTemplate = async (req, res) => {
   }
 };
 
+// export const createRazorpayOrder = async (req, res) => {
+//   try {
+//     const { templateId, country, serviceType = "self-edit" } = req.body;
+//     console.log("Country:", country);
+//     const template = await Template.findById(templateId);
+
+//     if (!template) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Template not found",
+//       });
+//     }
+
+//     let amount;
+//     let currency;
+
+//     if (country === "IN") {
+//       amount = Math.round((template.indprice + (serviceType === "expert" ? 1000 : 0)) * 100);
+//       currency = "INR";
+//     } else {
+//       amount = Math.round((template.usaprice + (serviceType === "expert" ? 20 : 0)) * 100);
+//       currency = "USD";
+//     }
+//     if (amount <= 0) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Invalid template price for Razorpay order.",
+//       });
+//     }
+
+//     const order = await razorpay.orders.create({
+//       amount,
+//       // currency: "INR",
+//       currency,
+//       receipt: `ord_${Date.now()}`,
+//       payment_capture: 1,
+//     });
+
+//     res.json({
+//       success: true,
+//       data: {
+//         orderId: order.id,
+//         amount: order.amount,
+//         currency: order.currency,
+//         key: process.env.RAZORPAY_KEY_ID,
+//         templateId,
+//       },
+//     });
+//   } catch (error) {
+//     console.error("Razorpay order creation error:", error);
+//     res.status(500).json({
+//       success: false,
+//       message: error.message || "Unable to create Razorpay order.",
+//     });
+//   }
+// };
+
+
 export const createRazorpayOrder = async (req, res) => {
   try {
     const { templateId, country, serviceType = "self-edit" } = req.body;
+
     console.log("Country:", country);
+
     const template = await Template.findById(templateId);
 
     if (!template) {
@@ -100,12 +161,21 @@ export const createRazorpayOrder = async (req, res) => {
     let currency;
 
     if (country === "IN") {
-      amount = Math.round((template.indprice + (serviceType === "expert" ? 1000 : 0)) * 100);
+      amount = Math.round(
+        (template.indprice +
+          (serviceType === "expert" ? 1000 : 0)) *
+          100
+      );
       currency = "INR";
     } else {
-      amount = Math.round((template.usaprice + (serviceType === "expert" ? 20 : 0)) * 100);
+      amount = Math.round(
+        (template.usaprice +
+          (serviceType === "expert" ? 20 : 0)) *
+          100
+      );
       currency = "USD";
     }
+
     if (amount <= 0) {
       return res.status(400).json({
         success: false,
@@ -113,26 +183,41 @@ export const createRazorpayOrder = async (req, res) => {
       });
     }
 
-    const order = await razorpay.orders.create({
+    // 1. Create Razorpay order
+    const razorpayOrder = await razorpay.orders.create({
       amount,
-      // currency: "INR",
       currency,
       receipt: `ord_${Date.now()}`,
       payment_capture: 1,
     });
 
+    // 2. Save order in our database
+    await Order.create({
+      userId: req.user._id,
+      templateId: template._id,
+      razorpayOrderId: razorpayOrder.id,
+      amount: razorpayOrder.amount,
+      currency: razorpayOrder.currency,
+      serviceType,
+      status: "CREATED",
+    });
+
+    console.log("Order saved in DB:", razorpayOrder.id);
+
+    // 3. Send order details to frontend
     res.json({
       success: true,
       data: {
-        orderId: order.id,
-        amount: order.amount,
-        currency: order.currency,
+        orderId: razorpayOrder.id,
+        amount: razorpayOrder.amount,
+        currency: razorpayOrder.currency,
         key: process.env.RAZORPAY_KEY_ID,
         templateId,
       },
     });
   } catch (error) {
     console.error("Razorpay order creation error:", error);
+
     res.status(500).json({
       success: false,
       message: error.message || "Unable to create Razorpay order.",
@@ -140,20 +225,80 @@ export const createRazorpayOrder = async (req, res) => {
   }
 };
 
+
+
+
+// export const verifyRazorpayPayment = async (req, res) => {
+//   try {
+//     const {
+//       razorpayOrderId,
+//       razorpayPaymentId,
+//       razorpaySignature,
+//       templateId,
+//     } = req.body;
+
+//     if (
+//       !razorpayOrderId ||
+//       !razorpayPaymentId ||
+//       !razorpaySignature ||
+//       !templateId
+//     ) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Missing payment verification fields",
+//       });
+//     }
+
+//     const signature = crypto
+//       .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+//       .update(`${razorpayOrderId}|${razorpayPaymentId}`)
+//       .digest("hex");
+
+//     if (signature !== razorpaySignature) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Invalid Razorpay signature",
+//       });
+//     }
+
+//     const template = await Template.findById(templateId);
+//     if (!template) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Template not found",
+//       });
+//     }
+
+//     const clientTemplate = await buildClientTemplate(req.user, template);
+
+//     res.status(201).json({
+//       success: true,
+//       message: "Payment verified and template purchased successfully",
+//       data: clientTemplate,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: error.message,
+//     });
+//   }
+// };
+
+
+
+
 export const verifyRazorpayPayment = async (req, res) => {
   try {
     const {
       razorpayOrderId,
       razorpayPaymentId,
       razorpaySignature,
-      templateId,
     } = req.body;
 
     if (
       !razorpayOrderId ||
       !razorpayPaymentId ||
-      !razorpaySignature ||
-      !templateId
+      !razorpaySignature
     ) {
       return res.status(400).json({
         success: false,
@@ -161,8 +306,12 @@ export const verifyRazorpayPayment = async (req, res) => {
       });
     }
 
+    // 1. Verify Razorpay payment signature
     const signature = crypto
-      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+      .createHmac(
+        "sha256",
+        process.env.RAZORPAY_KEY_SECRET
+      )
       .update(`${razorpayOrderId}|${razorpayPaymentId}`)
       .digest("hex");
 
@@ -173,28 +322,55 @@ export const verifyRazorpayPayment = async (req, res) => {
       });
     }
 
-    const template = await Template.findById(templateId);
-    if (!template) {
-      return res.status(400).json({
+    // 2. Find our database order
+    const order = await Order.findOne({
+      razorpayOrderId,
+    });
+
+    if (!order) {
+      return res.status(404).json({
         success: false,
-        message: "Template not found",
+        message: "Order not found",
       });
     }
 
-    const clientTemplate = await buildClientTemplate(req.user, template);
+    // 3. Make sure this order belongs to logged-in user
+    if (order.userId.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        success: false,
+        message: "Unauthorized payment verification",
+      });
+    }
 
-    res.status(201).json({
+    // 4. Save payment ID
+    order.razorpayPaymentId = razorpayPaymentId;
+
+    // Do NOT create ClientTemplate here.
+    // Razorpay webhook will mark it PAID and create the template.
+
+    await order.save();
+
+    return res.status(200).json({
       success: true,
-      message: "Payment verified and template purchased successfully",
-      data: clientTemplate,
+      message: "Payment verified successfully",
+      data: {
+        orderId: order.razorpayOrderId,
+        paymentId: order.razorpayPaymentId,
+        status: order.status,
+      },
     });
   } catch (error) {
-    res.status(500).json({
+    console.error("Payment verification error:", error);
+
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 };
+
+
+
 
 //---- /api/client-templates/my-templates -----
 export const getMyTemplates = async (req, res) => {

@@ -8,6 +8,7 @@ import authRouter from "./routes/authRoutes.js";
 import adminRouter from "./routes/adminRoutes.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import { razorpayWebhook } from "./controllers/razorpayWebhookController.js";
 import hitchedDefaultData from "./templateData/hitchedDefaultData.js";
 import saanjhDefaultData from "./templateData/saanjhDefaultData.js";
 import milanDefaultData from "./templateData/milanDefaultData.js";
@@ -189,6 +190,12 @@ const startServer = async () => {
       allowedHeaders: ["Content-Type", "Authorization"],
     }),
   );
+
+  app.post(
+  "/api/webhooks/razorpay",
+  express.raw({ type: "application/json" }),
+  razorpayWebhook
+);
 
   app.use(express.json());
   app.use(cookieParser());
