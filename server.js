@@ -182,14 +182,37 @@ const startServer = async () => {
   await connectDB();
   await seedTemplates();
 
-  app.use(
-    cors({
-      origin: process.env.FRONTEND_URL || "http://localhost:3000",
-      credentials: true,
-      methods: ["GET", "POST", "PUT", "DELETE"],
-      allowedHeaders: ["Content-Type", "Authorization"],
-    }),
-  );
+  // app.use(
+  //   cors({
+  //     origin: process.env.FRONTEND_URL || "http://localhost:3000",
+  //     credentials: true,
+  //     methods: ["GET", "POST", "PUT", "DELETE"],
+  //     allowedHeaders: ["Content-Type", "Authorization"],
+  //   }),
+  // );
+
+
+const allowedOrigins = (process.env.FRONTEND_URL || "http://localhost:3000")
+  .split(",")
+  .map((url) => url.trim().replace(/\/$/, "")); // remove trailing slash
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin.replace(/\/$/, ""))) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS: " + origin));
+      }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
+
+
+
 
   app.post(
   "/api/webhooks/razorpay",
