@@ -24,9 +24,9 @@ router.post("/buy-template", protect, buyTemplate);
 // ---- /api/client-templates/create-order ------
 router.post("/create-order", protect, createRazorpayOrder);
 
-// Public custom payment checkout.
-router.post("/custom-payment/create-order", createCustomPaymentOrder);
-router.post("/custom-payment/verify", verifyCustomPayment);
+// Public booking payment checkout.
+router.post("/booking-payment/create-order", createCustomPaymentOrder);
+router.post("/booking-payment/verify", verifyCustomPayment);
 
 // ---- /api/client-templates/verify-payment ------
 router.post("/verify-payment", protect, verifyRazorpayPayment);
