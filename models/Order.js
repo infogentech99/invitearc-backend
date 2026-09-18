@@ -5,13 +5,13 @@ const orderSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true,
+      required: false,
     },
 
     templateId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Template",
-      required: true,
+      required: false,
     },
 
     razorpayOrderId: {
@@ -37,8 +37,14 @@ const orderSchema = new mongoose.Schema(
 
     serviceType: {
       type: String,
-      enum: ["self-edit", "team-edit"],
+      enum: ["self-edit", "team-edit", "custom-payment"],
       default: "self-edit",
+    },
+
+    orderType: {
+      type: String,
+      enum: ["template", "custom-payment"],
+      default: "template",
     },
 
     status: {

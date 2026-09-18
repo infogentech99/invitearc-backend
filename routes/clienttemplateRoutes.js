@@ -4,6 +4,8 @@ import { protect } from "../middleware/authMiddleware.js";
 import {
   buyTemplate,
   createRazorpayOrder,
+  createCustomPaymentOrder,
+  verifyCustomPayment,
   verifyRazorpayPayment,
   getMyTemplates,
   getClientTemplateById,
@@ -21,6 +23,10 @@ router.post("/buy-template", protect, buyTemplate);
 
 // ---- /api/client-templates/create-order ------
 router.post("/create-order", protect, createRazorpayOrder);
+
+// Public custom payment checkout.
+router.post("/custom-payment/create-order", createCustomPaymentOrder);
+router.post("/custom-payment/verify", verifyCustomPayment);
 
 // ---- /api/client-templates/verify-payment ------
 router.post("/verify-payment", protect, verifyRazorpayPayment);

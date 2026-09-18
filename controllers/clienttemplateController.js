@@ -164,6 +164,99 @@ export const createRazorpayOrder = async (req, res) => {
   }
 };
 
+export const createCustomPaymentOrder = async (req, res) => {
+  try {
+    const isIndia = req.body.country === "IN";
+    const amountInCurrency = Number(req.body.amount);
+
+    if (!Number.isFinite(amountInCurrency) || amountInCurrency <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Enter a valid payment amount.",
+      });
+    }
+
+    const amount = Math.round(amountInCurrency * 100);
+    const razorpayOrder = await razorpay.orders.create({
+      amount,
+      currency: isIndia ? "INR" : "USD",
+      receipt: `custom_${Date.now()}`,
+      payment_capture: 1,
+    });
+
+    await Order.create({
+      razorpayOrderId: razorpayOrder.id,
+      amount: razorpayOrder.amount,
+      currency: razorpayOrder.currency,
+      serviceType: "custom-payment",
+      orderType: "custom-payment",
+      status: "CREATED",
+    });
+
+    return res.json({
+      success: true,
+      data: {
+        orderId: razorpayOrder.id,
+        amount: razorpayOrder.amount,
+        currency: razorpayOrder.currency,
+        key: process.env.RAZORPAY_KEY_ID,
+      },
+    });
+  } catch (error) {
+    console.error("Custom payment order creation error:", error);
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Unable to create payment order.",
+    });
+  }
+};
+
+export const verifyCustomPayment = async (req, res) => {
+  try {
+    const { razorpayOrderId, razorpayPaymentId, razorpaySignature } = req.body;
+
+    if (!razorpayOrderId || !razorpayPaymentId || !razorpaySignature) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing payment verification fields",
+      });
+    }
+
+    const signature = crypto
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+      .update(`${razorpayOrderId}|${razorpayPaymentId}`)
+      .digest("hex");
+
+    if (signature !== razorpaySignature) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Razorpay signature",
+      });
+    }
+
+    const order = await Order.findOne({
+      razorpayOrderId,
+      orderType: "custom-payment",
+    });
+
+    if (!order) {
+      return res.status(404).json({ success: false, message: "Order not found" });
+    }
+
+    order.razorpayPaymentId = razorpayPaymentId;
+    order.status = "PAID";
+    await order.save();
+
+    return res.json({ success: true, message: "Payment verified successfully" });
+  } catch (error) {
+    console.error("Custom payment verification error:", error);
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Payment verification failed.",
+    });
+  }
+};
+
 export const verifyRazorpayPayment = async (req, res) => {
   try {
     const { razorpayOrderId, razorpayPaymentId, razorpaySignature } = req.body;
