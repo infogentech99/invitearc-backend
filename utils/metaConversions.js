@@ -18,6 +18,9 @@ export const sendMetaPurchaseEvent = async ({
     const pixelId = process.env.META_PIXEL_ID;
     const accessToken = process.env.META_CAPI_ACCESS_TOKEN;
 
+// test code
+    // const testEventCode = process.env.META_TEST_EVENT_CODE;
+
     if (!pixelId || !accessToken) {
       console.error("Meta CAPI credentials are missing");
       return false;
@@ -26,9 +29,8 @@ export const sendMetaPurchaseEvent = async ({
     const eventId = payment.id;
 
     const userData = {
-      em: [hashData(user.email)],
-      ph: [hashData(user.mobileNumber)],
-    };
+  em: [hashData(user?.email || order.email)],
+};
 
     const payload = {
       data: [
@@ -52,6 +54,12 @@ export const sendMetaPurchaseEvent = async ({
       ],
 
     };
+
+//test code
+// if (testEventCode) {
+//   payload.test_event_code = testEventCode;
+// }
+
 
     const response = await fetch(
       `https://graph.facebook.com/v25.0/${pixelId}/events?access_token=${accessToken}`,

@@ -166,8 +166,16 @@ export const createRazorpayOrder = async (req, res) => {
 
 export const createCustomPaymentOrder = async (req, res) => {
   try {
+    const email = typeof req.body.email === "string" ? req.body.email.trim() : "";
     const isIndia = req.body.country === "IN";
     const amountInCurrency = Number(req.body.amount);
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return res.status(400).json({
+        success: false,
+        message: "Enter a valid email address.",
+      });
+    }
 
     if (!Number.isFinite(amountInCurrency) || amountInCurrency <= 0) {
       return res.status(400).json({
@@ -185,6 +193,7 @@ export const createCustomPaymentOrder = async (req, res) => {
     });
 
     await Order.create({
+      email,
       razorpayOrderId: razorpayOrder.id,
       amount: razorpayOrder.amount,
       currency: razorpayOrder.currency,
@@ -244,7 +253,7 @@ export const verifyCustomPayment = async (req, res) => {
     }
 
     order.razorpayPaymentId = razorpayPaymentId;
-    order.status = "PAID";
+    // order.status = "PAID";
     await order.save();
 
     return res.json({ success: true, message: "Payment verified successfully" });

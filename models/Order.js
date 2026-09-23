@@ -20,6 +20,13 @@ const orderSchema = new mongoose.Schema(
       unique: true,
     },
 
+    email: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      default: null,
+    },
+
     razorpayPaymentId: {
       type: String,
       default: null,

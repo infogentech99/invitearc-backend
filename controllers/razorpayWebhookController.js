@@ -87,18 +87,34 @@ export const razorpayWebhook = async (req, res) => {
       }
 
       // 6. Prevent duplicate processing
-      if (dbOrder.status === "PAID") {
-        console.log(
-          "Order already processed:",
-          razorpayOrder.id
-        );
+      // if (dbOrder.status === "PAID") {
+      //   console.log(
+      //     "Order already processed:",
+      //     razorpayOrder.id
+      //   );
 
-        return res.status(200).json({
-          success: true,
-          received: true,
-          message: "Order already processed",
-        });
-      }
+      //   return res.status(200).json({
+      //     success: true,
+      //     received: true,
+      //     message: "Order already processed",
+      //   });
+      // }
+
+
+if (dbOrder.status === "PAID" && dbOrder.metaPurchaseSent) {
+  console.log(
+    "Order already processed:",
+    razorpayOrder.id
+  );
+
+  return res.status(200).json({
+    success: true,
+    received: true,
+    message: "Order already processed",
+  });
+}
+
+
 
       // 7. Verify amount and currency
       if (
@@ -117,6 +133,49 @@ export const razorpayWebhook = async (req, res) => {
           message: "Payment amount or currency mismatch",
         });
       }
+
+
+
+
+if (dbOrder.orderType === "custom-payment") {
+  dbOrder.razorpayPaymentId = payment.id;
+  dbOrder.status = "PAID";
+  await dbOrder.save();
+
+  console.log("Custom payment marked as PAID:", {
+    orderId: dbOrder.razorpayOrderId,
+    paymentId: payment.id,
+  });
+
+  if (!dbOrder.metaPurchaseSent) {
+    const metaSent = await sendMetaPurchaseEvent({
+      order: dbOrder,
+      payment,
+    });
+
+    if (metaSent) {
+      dbOrder.metaPurchaseSent = true;
+      await dbOrder.save();
+
+      console.log(
+        "Meta Purchase event sent successfully:",
+        payment.id
+      );
+    } else {
+      console.error(
+        "Meta Purchase event failed:",
+        payment.id
+      );
+    }
+  }
+
+  return res.status(200).json({
+    success: true,
+    received: true,
+  });
+}
+
+
 
       // 8. Find purchased template
       const template = await Template.findById(
