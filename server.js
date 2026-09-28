@@ -213,9 +213,11 @@ const startServer = async () => {
   //   }),
   // );
 
-  const allowedOrigins = (process.env.FRONTEND_URL || "http://localhost:3000")
-    .split(",")
-    .map((url) => url.trim().replace(/\/$/, "")); // remove trailing slash
+  const allowedOrigins = [
+    "https://invitearc.com",
+    "https://www.invitearc.com",
+    ...(process.env.FRONTEND_URL || "http://localhost:3000").split(","),
+  ].map((url) => url.trim().replace(/\/$/, ""));
 
   app.use(
     cors({
