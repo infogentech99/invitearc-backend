@@ -12,7 +12,6 @@ const blissDefaultData = {
   celebrationintro: "The Celebration",
   celebrationDesc:
     "We invite you to join us in these moments of joy as we prepare to unite our lives in faith and love.",
-
 weddingTitle:"Wedding Ceremony",
 weddingSubtitle:"SACRED UNION",
 weddingDate:"Saturday, September 28, 2024",
