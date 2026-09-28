@@ -22,6 +22,8 @@ import uploadRoutes from "./routes/uploadRoutes.js";
 import kalyanamDefaultData from "./templateData/kalyanamDefaultData.js";
 import niqahDefaultData from "./templateData/niqahDefaultData.js";
 import vowsDefaultData from "./templateData/vowsDefaultData.js";
+import blissDefaultData from "./templateData/blissDefaultData.js";
+import ivoryDefaultData from "./templateData/ivoryDefaultData.js";
 import beyondDefaultData from "./templateData/beyondDefaultData.js";
 import sohalaDefaultData from "./templateData/sohalaDefaultData.js";
 
@@ -51,7 +53,7 @@ const seedTemplates = async () => {
         defaultData: saanjhDefaultData,
       },
 
-       {
+      {
         title: "Milan",
         slug: "milan",
         indprice: 2549,
@@ -152,7 +154,27 @@ const seedTemplates = async () => {
         componentKey: "vows",
         defaultData: vowsDefaultData,
       },
+      {
+        title: "Bliss",
+        slug: "bliss",
+        indprice: 2549,
+        usaprice: 50,
+        category: "Christian Weddings",
+        previewImage: "/assets/preview-images/bliss.webp",
+        componentKey: "bliss",
+        defaultData: blissDefaultData,
+      },
 
+      {
+        title: "Ivory",
+        slug: "ivory",
+        indprice: 2549,
+        usaprice: 50,
+        category: "Christian Weddings",
+        previewImage: "/assets/preview-images/ivory.webp",
+        componentKey: "ivory",
+        defaultData: ivoryDefaultData,
+      },
       // {
       //   title: "Beyond",
       //   slug: "beyond",
@@ -191,34 +213,30 @@ const startServer = async () => {
   //   }),
   // );
 
+  const allowedOrigins = (process.env.FRONTEND_URL || "http://localhost:3000")
+    .split(",")
+    .map((url) => url.trim().replace(/\/$/, "")); // remove trailing slash
 
-const allowedOrigins = (process.env.FRONTEND_URL || "http://localhost:3000")
-  .split(",")
-  .map((url) => url.trim().replace(/\/$/, "")); // remove trailing slash
-
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin.replace(/\/$/, ""))) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS: " + origin));
-      }
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  }),
-);
-
-
-
+  app.use(
+    cors({
+      origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin.replace(/\/$/, ""))) {
+          callback(null, true);
+        } else {
+          callback(new Error("Not allowed by CORS: " + origin));
+        }
+      },
+      credentials: true,
+      methods: ["GET", "POST", "PUT", "DELETE"],
+      allowedHeaders: ["Content-Type", "Authorization"],
+    }),
+  );
 
   app.post(
-  "/api/webhooks/razorpay",
-  express.raw({ type: "application/json" }),
-  razorpayWebhook
-);
+    "/api/webhooks/razorpay",
+    express.raw({ type: "application/json" }),
+    razorpayWebhook,
+  );
 
   app.use(express.json());
   app.use(cookieParser());
