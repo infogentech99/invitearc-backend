@@ -1,5 +1,45 @@
 const ivoryDefaultData = {
+  togetherName: "TOGETHER WITH THEIR FAMILIES",
+  groomName: "Aurelia",
+  brideName: "Julian",
+  ceremonyInfo: "CEREMONY INFO",
+  groomParentTitle: "Parents of the Groom",
+  groomParentSurname: "Mr. & Mrs.",
+  groomDetails: "Edward Julian",
+  brideParentTitle: "Parents of the Bride",
+  birdeParentSurname: "Mr. & Mrs.",
+  brideDetails: "Arthur Aurelia",
+  inviteLine:
+    "together with their families, request the honor of your presence at the marriage of",
+  venue: "Villa Ephrussi de Rothschild",
+  venueLocation: "Saint-Jean-Cap-Ferrat, France",
+  eventDay: "Saturday",
+  eventTime: "at five o'clock",
+  eventMonth: "July 12th",
+  eventYear: "Twenty Twenty-Five",
+  storyTitle: "OUR STORY",
+  storyDescription:
+    "From the sun-drenched cobblestones of Florence to the quiet countryside surrounding the Côte d'Azur, our journey has been defined by shared discovery and timeless romance. What began as a chance meeting at a small independent bookstore in Paris blossomed into a lifetime of wandering together.",
+  loveQuote: "In all the world, there is no heart for me like yours.",
+  receptionInfo: "Reception Info",
+  receptionMessage:
+    "Please join us for an evening of dinner and dancing as we celebrate our new life together.",
+  receptionTime: "18:30",
+  receptionDay: "SATURDAY",
+  receptionDate: "10",
+  receptionMonth: "OCTOBER",
+  receptionYear: "2026",
+  guestTitle: "Guests Arrive",
+  guestTime: "18:00 PM",
+  receptionTitle: "Reception Begins",
 
-}
+  backgroundMusicUrl: "",
+  backgroundMusicFileName: "",
+  sharePreviewTitle: "Aurelia & Julian Wedding Invitation",
+  sharePreviewDescription:
+    "Join us as we celebrate the wedding of Aurelia and Julian.",
+  sharePreviewImage:
+    "https://res.cloudinary.com/drl4fmhrq/image/upload/v1783145066/og_n_yisygg.jpg",
+};
 
 export default ivoryDefaultData;
