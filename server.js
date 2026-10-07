@@ -24,6 +24,7 @@ import niqahDefaultData from "./templateData/niqahDefaultData.js";
 import vowsDefaultData from "./templateData/vowsDefaultData.js";
 import blissDefaultData from "./templateData/blissDefaultData.js";
 import ivoryDefaultData from "./templateData/ivoryDefaultData.js";
+import faithDefaultData from "./templateData/faithDefaultData.js";
 import beyondDefaultData from "./templateData/beyondDefaultData.js";
 import sohalaDefaultData from "./templateData/sohalaDefaultData.js";
 
@@ -174,6 +175,18 @@ const seedTemplates = async () => {
         previewImage: "/assets/preview-images/ivory.webp",
         componentKey: "ivory",
         defaultData: ivoryDefaultData,
+      },
+
+
+       {
+        title: "Faith",
+        slug: "faith",
+        indprice: 2549,
+        usaprice: 51.99,
+        category: "Christian Weddings",
+        previewImage: "/assets/preview-images/faith.webp",
+        componentKey: "faith",
+        defaultData: faithDefaultData,
       },
       // {
       //   title: "Beyond",
