@@ -12,7 +12,7 @@ const razorpay = new Razorpay({
 });
 
 const USD_TO_INR_RATE = 82;
-
+const INDIA_GST_RATE = 0.18;
 //Admin helper to register a new template (like 'hitched') in the system.
 
 export const addTemplateToSystem = async (req, res) => {
@@ -102,11 +102,17 @@ export const createRazorpayOrder = async (req, res) => {
 
     let amount;
     let currency;
+let subtotal;
+    let gstAmount = 0;
+
+
 
     if (country === "IN") {
-      amount = Math.round(
-        (template.indprice + (serviceType === "team-edit" ? 1000 : 0)) * 100,
-      );
+       subtotal =
+        Number(template.indprice) + (serviceType === "team-edit" ? 1000 : 0);
+      const subtotalPaise = Math.round(subtotal * 100);
+      gstAmount = Math.round(subtotalPaise * INDIA_GST_RATE);
+      amount = subtotalPaise + gstAmount;
       currency = "INR";
     } else {
       amount = Math.round(
@@ -115,7 +121,7 @@ export const createRazorpayOrder = async (req, res) => {
       currency = "USD";
     }
 
-    if (amount <= 0) {
+    if (!Number.isFinite(amount) || amount <= 0) {
       return res.status(400).json({
         success: false,
         message: "Invalid template price for Razorpay order.",
@@ -152,6 +158,12 @@ export const createRazorpayOrder = async (req, res) => {
         currency: razorpayOrder.currency,
         key: process.env.RAZORPAY_KEY_ID,
         templateId,
+        ...(country === "IN" && {
+          subtotal: Math.round(subtotal * 100) / 100,
+          gstAmount: gstAmount / 100,
+          totalAmount: amount / 100,
+          gstRate: INDIA_GST_RATE * 100,
+        }),
       },
     });
   } catch (error) {

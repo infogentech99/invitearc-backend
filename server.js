@@ -46,7 +46,7 @@ const seedTemplates = async () => {
       {
         title: "Saanjh",
         slug: "saanjh",
-        indprice: 2549,
+        indprice: 1640,
         usaprice: 50,
         category: "Hindu Weddings",
         previewImage: "/assets/preview-images/saanjh.webp",
@@ -57,7 +57,7 @@ const seedTemplates = async () => {
       {
         title: "Milan",
         slug: "milan",
-        indprice: 2549,
+        indprice: 1640,
         usaprice: 50,
         category: "Hindu Weddings",
         previewImage: "/assets/preview-images/milan.webp",
@@ -68,7 +68,7 @@ const seedTemplates = async () => {
       {
         title: "Biye",
         slug: "biye",
-        indprice: 2549,
+        indprice: 1640,
         usaprice: 50,
         category: "Hindu Weddings",
         previewImage: "/assets/preview-images/biye.webp",
@@ -118,7 +118,7 @@ const seedTemplates = async () => {
       {
         title: "Mayra",
         slug: "mayra",
-        indprice: 2549,
+        indprice: 1640,
         usaprice: 50,
         category: "Hindu Weddings",
         previewImage: "/assets/preview-images/mayra.webp",
@@ -148,7 +148,7 @@ const seedTemplates = async () => {
       {
         title: "Vows",
         slug: "vows",
-        indprice: 2549,
+        indprice: 1640,
         usaprice: 50,
         category: "Christian Weddings",
         previewImage: "/assets/preview-images/vows.webp",
