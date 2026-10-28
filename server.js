@@ -26,6 +26,7 @@ import blissDefaultData from "./templateData/blissDefaultData.js";
 import ivoryDefaultData from "./templateData/ivoryDefaultData.js";
 import faithDefaultData from "./templateData/faithDefaultData.js";
 import celesteDefaultData from "./templateData/celesteDefaultData.js";
+import lovelleDefaultData from "./templateData/lovelleDefaultData.js";
 import beyondDefaultData from "./templateData/beyondDefaultData.js";
 import sohalaDefaultData from "./templateData/sohalaDefaultData.js";
 
@@ -37,7 +38,7 @@ const seedTemplates = async () => {
       {
         title: "Hitched",
         slug: "hitched",
-        indprice: 2549,
+        indprice: 2459,
         usaprice: 50,
         category: "Hindu Weddings",
         previewImage: "/assets/preview-images/hitched.webp",
@@ -79,7 +80,7 @@ const seedTemplates = async () => {
       {
         title: "Aura",
         slug: "aura",
-        indprice: 2549,
+        indprice: 2459,
         usaprice: 50,
         category: "Hindu Weddings",
         previewImage: "/assets/preview-images/aura.webp",
@@ -89,7 +90,7 @@ const seedTemplates = async () => {
       {
         title: "Sohala",
         slug: "sohala",
-        indprice: 2549,
+        indprice: 2459,
         usaprice: 50,
         category: "Hindu Weddings",
         previewImage: "/assets/preview-images/sohala.webp",
@@ -99,7 +100,7 @@ const seedTemplates = async () => {
       {
         title: "Jodi",
         slug: "jodi",
-        indprice: 2549,
+        indprice: 2459,
         usaprice: 50,
         category: "Sikh Weddings",
         previewImage: "/assets/preview-images/laavan.webp",
@@ -109,7 +110,7 @@ const seedTemplates = async () => {
       {
         title: "Starlight",
         slug: "starlight",
-        indprice: 2549,
+        indprice: 2459,
         usaprice: 50,
         category: "Sikh Weddings",
         previewImage: "/assets/preview-images/starlight.webp",
@@ -129,7 +130,7 @@ const seedTemplates = async () => {
       {
         title: "Kalyanam",
         slug: "kalyanam",
-        indprice: 2549,
+        indprice: 2459,
         usaprice: 50,
         category: "South-Indian Weddings",
         previewImage: "/assets/preview-images/kalyanam.webp",
@@ -139,7 +140,7 @@ const seedTemplates = async () => {
       {
         title: "Niqah",
         slug: "niqah",
-        indprice: 2549,
+        indprice: 2459,
         usaprice: 50,
         category: "Muslim Weddings",
         previewImage: "/assets/preview-images/niqah.webp",
@@ -159,7 +160,7 @@ const seedTemplates = async () => {
       {
         title: "Bliss",
         slug: "bliss",
-        indprice: 2549,
+        indprice: 2459,
         usaprice: 50,
         category: "Christian Weddings",
         previewImage: "/assets/preview-images/bliss.webp",
@@ -170,7 +171,7 @@ const seedTemplates = async () => {
       {
         title: "Ivory",
         slug: "ivory",
-        indprice: 2549,
+        indprice: 2459,
         usaprice: 50,
         category: "Christian Weddings",
         previewImage: "/assets/preview-images/ivory.webp",
@@ -181,7 +182,7 @@ const seedTemplates = async () => {
       {
         title: "Faith",
         slug: "faith",
-        indprice: 2549,
+        indprice: 2459,
         usaprice: 51.99,
         category: "Christian Weddings",
         previewImage: "/assets/preview-images/faith.webp",
@@ -191,12 +192,22 @@ const seedTemplates = async () => {
       {
         title: "Celeste",
         slug: "celeste",
-        indprice: 2549,
+        indprice: 2459,
         usaprice: 51.99,
         category: "Christian Weddings",
         previewImage: "/assets/preview-images/celeste.webp",
         componentKey: "celeste",
         defaultData: celesteDefaultData,
+      },
+       {
+        title: "Lovelle",
+        slug: "lovelle",
+        indprice: 2459,
+        usaprice: 51.99,
+        category: "Christian Weddings",
+        previewImage: "/assets/preview-images/lovelle.webp",
+        componentKey: "lovelle",
+        defaultData: lovelleDefaultData,
       },
       // {
       //   title: "Beyond",
