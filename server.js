@@ -27,6 +27,7 @@ import ivoryDefaultData from "./templateData/ivoryDefaultData.js";
 import faithDefaultData from "./templateData/faithDefaultData.js";
 import celesteDefaultData from "./templateData/celesteDefaultData.js";
 import lovelleDefaultData from "./templateData/lovelleDefaultData.js";
+import agapeDefaultData from "./templateData/agapeDefaultData.js";
 import beyondDefaultData from "./templateData/beyondDefaultData.js";
 import sohalaDefaultData from "./templateData/sohalaDefaultData.js";
 
@@ -208,6 +209,16 @@ const seedTemplates = async () => {
         previewImage: "/assets/preview-images/lovelle.webp",
         componentKey: "lovelle",
         defaultData: lovelleDefaultData,
+      },
+       {
+        title: "Agape",
+        slug: "agape",
+        indprice: 2459,
+        usaprice: 51.99,
+        category: "Christian Weddings",
+        previewImage: "/assets/preview-images/agape.webp",
+        componentKey: "agape",
+        defaultData: agapeDefaultData,
       },
       // {
       //   title: "Beyond",
